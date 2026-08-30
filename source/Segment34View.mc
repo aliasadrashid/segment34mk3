@@ -1269,8 +1269,10 @@ class Segment34View extends WatchUi.WatchFace {
                 var pos = sec_left - marginX;
                 if((sec_left - date_right_edge) < 3 * marginX) {
                     pos = (date_right_edge + sec_left) / 2;
+                    dc.drawText(pos, y1, fontSmallData, values[:dataNotifications], Graphics.TEXT_JUSTIFY_CENTER);
+                } else {
+                    dc.drawText(pos, y1, fontSmallData, values[:dataNotifications], Graphics.TEXT_JUSTIFY_RIGHT);
                 }
-                dc.drawText(pos, y1, fontSmallData, values[:dataNotifications], Graphics.TEXT_JUSTIFY_CENTER);
             }
         } else { // Date is centered, notification on left side
             dc.drawText(baseX - halfClockWidth, y1, fontSmallData, values[:dataNotifications], Graphics.TEXT_JUSTIFY_LEFT);

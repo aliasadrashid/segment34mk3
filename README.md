@@ -89,6 +89,7 @@ For refactorings and optimizations keep in mind that:
 - Fenix 9 series support
 - Sleep score as option
 - Moon phase precision should be better now
+- Fixed margin issue between seconds and nofication fields in some cases
 
 2.1
 - Option to show a small graph instead of the bottom 5 digit field

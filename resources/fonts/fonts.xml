@@ -34,6 +34,12 @@
     <font id="segments145_4" filename="segments145_4.fnt" antialias="true" filter=" !#1234567890:;ABP" />
     <font id="segments145outline_4" filename="segments145outline_4.fnt" antialias="true" filter=" !#1234567890:;ABP" />
 
+    <font id="segments80narrow" filename="segments80narrow.fnt" antialias="true" filter=" !#1234567890:;ABP" />
+    <font id="segments80narrow_2" filename="segments80narrow_2.fnt" antialias="true" filter=" !#1234567890:;ABP" />
+    <font id="segments80narrow_2r" filename="segments80narrow_2r.fnt" antialias="true" filter=" !#1234567890:;ABP" />
+    <font id="segments80narrow_3" filename="segments80narrow_3.fnt" antialias="true" filter=" !#1234567890:;ABP" />
+    <font id="segments80narrow_4" filename="segments80narrow_4.fnt" antialias="true" filter=" !#1234567890:;ABP" />
+
     <font id="icons" filename="icons.fnt" antialias="true" />
     <font id="icons_large" filename="icons_large.fnt" antialias="true" />
     <font id="led" filename="led.fnt" antialias="false" />

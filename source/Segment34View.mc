@@ -78,6 +78,7 @@ class Segment34View extends WatchUi.WatchFace {
     hidden var fontAODData as WatchUi.FontResource?;
     hidden var fontBottomData as WatchUi.FontResource?;
     hidden var fontBattery as WatchUi.FontResource?;
+    hidden var fontBottomCompactData as WatchUi.FontResource?; // For Round240Large compact bottom layout
 
 
     // Layout Caching
@@ -190,6 +191,7 @@ class Segment34View extends WatchUi.WatchFace {
 
     var clockBgText = "";
 
+    (:Round240) const barWidth = 3;
     (:Round260) const barWidth = 3;
     (:Round280) const barWidth = 3;
     (:Round390) const barWidth = 4;
@@ -388,6 +390,101 @@ class Segment34View extends WatchUi.WatchFace {
         } else {
             drawAODPattern = Application.loadResource(Rez.Drawables.aod2) as BitmapResource;
         }
+    }
+
+    (:Round240)
+    hidden function loadResources() as Void {
+        switch(propClockFont) {
+            case 1:  fontClock = Application.loadResource(Rez.Fonts.segments80narrow_2); break;
+            case 2:  fontClock = Application.loadResource(Rez.Fonts.segments80narrow_3); break;
+            case 3:  fontClock = Application.loadResource(Rez.Fonts.segments80narrow_4); break;
+            case 4:  fontClock = Application.loadResource(Rez.Fonts.segments80narrow_2r); break;
+            default: fontClock = Application.loadResource(Rez.Fonts.segments80narrow); break;
+        }
+
+        if(propFontSize == 0) {
+            // MkII-proven 240x240 sizing, adapted to MkIII font variants.
+            fontTinyData = Application.loadResource(Rez.Fonts.smol);
+            fontSmallData = loadFontVariant(
+                Rez.Fonts.led_small,
+                Rez.Fonts.led_small_readable,
+                Rez.Fonts.led_small_lines,
+                propSmallFontVariant
+            );
+            fontBottomData = loadFontVariant(
+                Rez.Fonts.led_small,
+                Rez.Fonts.led_small_readable,
+                Rez.Fonts.led_small_lines,
+                propBottomFontVariant
+            );
+            fontLabel = Application.loadResource(Rez.Fonts.xsmol);
+            fontBattery = fontTinyData;
+
+            marginY = Math.round(screenHeight / 35);
+            labelHeight = 5;
+            tinyDataHeight = 8;
+            smallDataHeight = 13;
+            secondsClipWidth = 24;
+            bottomFiveAdj = 2;
+            baseY = centerY - smallDataHeight + 4;
+            aboveLine2Adjustment = 5;
+            bottomFieldWidths = [3, 3, 3, 0];
+            bottomDataWidth = 12;
+        } else {
+            // Round240 large mode keeps ancillary rows compact while
+            // retaining the larger font for the main bottom data fields.
+            fontTinyData = Application.loadResource(Rez.Fonts.storre);
+            fontSmallData = loadFontVariant(
+                Rez.Fonts.led_small,
+                Rez.Fonts.led_small_readable,
+                Rez.Fonts.led_small_lines,
+                propSmallFontVariant
+            );
+            fontBottomData = loadFontVariant(
+                Rez.Fonts.led,
+                Rez.Fonts.led_inbetween,
+                Rez.Fonts.led_lines,
+                propBottomFontVariant
+            );
+            fontBottomCompactData = loadFontVariant(
+                Rez.Fonts.led_small,
+                Rez.Fonts.led_small_readable,
+                Rez.Fonts.led_small_lines,
+                propBottomFontVariant
+            );
+            fontLabel = fontTinyData;
+            fontAODData = Application.loadResource(Rez.Fonts.led);
+            fontBattery = Application.loadResource(Rez.Fonts.led_small_lines);
+
+            marginY = 4;
+            labelHeight = 8;
+            tinyDataHeight = 8;
+            smallDataHeight = 13;
+            secondsClipWidth = 24;
+            bottomFiveAdj = 2;
+            baseY = centerY - 6;
+            aboveLine2Adjustment = 3;
+            bottomFieldWidths = [4, 4, 0, 0];
+            bottomDataWidth = 18;
+        }
+
+        fontIcons = Application.loadResource(Rez.Fonts.icons);
+
+        clockHeight = 80;
+        clockWidth = 220;
+        labelMargin = (propFontSize == 0) ? 6 : 5;
+        largeDataHeight = 20;
+        largeDataWidth = 18;
+
+        baseX = centerX;
+        fieldSpaceingAdj = 10;
+        barBottomAdj = 1;
+
+        graphBarWidth = (propGraphSize == 1) ? 2 : 1;
+        graphBarSpacing = (propGraphSize == 1) ? 2 : 1;
+        graphHeight = (propGraphSize == 1) ? 22 : 15;
+        graphTargetWidth = (propGraphSize == 1) ? 20 : 30;
+        graphHalfWidth = screenWidth / 6;
     }
 
     (:Round260)
@@ -1490,13 +1587,55 @@ class Segment34View extends WatchUi.WatchFace {
 
     (:Round)
     hidden function drawBottomFieldsWithIcons(dc as Dc, values as Dictionary) as Void {
+        var round240CompactBottom =
+            (screenWidth == 240 && screenHeight == 240);
+
+        var round240LargeBottom =
+            (screenWidth == 240 && screenHeight == 240 && propFontSize == 1);
+
+        var bottomFiveFont =
+            (round240LargeBottom && fontBottomCompactData != null)
+            ? fontBottomCompactData
+            : fontBottomData;
+        var bottomFiveWidth = round240LargeBottom ? 12 : bottomDataWidth;
+
+        var fieldX = centerX;
+        if(round240CompactBottom) {
+            fieldX = round240LargeBottom ? centerX - 25 : centerX - 19;
+        }
+        var fieldY = round240CompactBottom ? bottomFiveY + 3 : bottomFiveY;
+
         var step_width;
         if(GraphRenderer.isGraphCode(propBottomFieldShows)) {
-            bottomGraphRenderer.drawGraph(dc, values[:dataBottomGraph], values[:dataBottomGraph2b], centerX, bottomFiveY, largeDataHeight, theme.colors);
-            step_width = bottomDataWidth * 5;
+            bottomGraphRenderer.drawGraph(
+                dc,
+                values[:dataBottomGraph],
+                values[:dataBottomGraph2b],
+                fieldX,
+                fieldY,
+                largeDataHeight,
+                theme.colors
+            );
+            step_width = bottomFiveWidth * 5;
         } else {
-            step_width = drawDataField(dc, centerX, bottomFiveY, 3, null, values[:dataBottom], 5, fontBottomData, bottomDataWidth * 5);
+            step_width = drawDataField(
+                dc,
+                fieldX,
+                fieldY,
+                3,
+                null,
+                values[:dataBottom],
+                5,
+                bottomFiveFont,
+                bottomFiveWidth * 5
+            );
         }
+
+        if(round240CompactBottom) {
+            // MkII reserves extra horizontal room for the battery on 240x240.
+            step_width += 30;
+        }
+
         var iconY = getBottomIconY(step_width);
 
         // Draw icons
@@ -1606,8 +1745,21 @@ class Segment34View extends WatchUi.WatchFace {
     (:MIP)
     hidden function drawBatteryIcon(dc as Dc, values as Dictionary) {
         if(!isBatteryIconVisible()) { return; }
-        var x = centerX;
-        var y = getBatteryIconY();
+
+        var round240CompactBottom =
+            (screenWidth == 240 &&
+            screenHeight == 240 &&
+            propBottomFieldShows != -2);
+
+        var round240LargeBottom =
+            (round240CompactBottom && propFontSize == 1);
+
+        var x = round240CompactBottom
+            ? (round240LargeBottom ? centerX + 29 : centerX + 32)
+            : centerX;
+
+        var y = round240CompactBottom ? bottomFiveY : getBatteryIconY();
+
         dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
 
         if(propFontSize == 0) {

@@ -4,26 +4,34 @@ A Garmin Connect IQ watchface written in **Monkey C** (`.mc` files), targeting ~
 
 ## Build & Test
 
+The commands below use two shell variables; set them for your machine first:
+```bash
+# Connect IQ SDK root (the folder containing bin/monkeybrains.jar), e.g. on macOS:
+SDK="$HOME/Library/Application Support/Garmin/ConnectIQ/Sdks/<sdk-version>"
+# Your Connect IQ developer signing key:
+DEV_KEY="/path/to/developer_key"
+```
+`monkeyc` is usually not on PATH, so the commands call the SDK jar directly.
+
 **Build (type-check, no simulator):**
 ```bash
 java -Xms1g -Dfile.encoding=UTF-8 -Dapple.awt.UIElement=true \
-  -jar "/Users/ludvig.wadenstein/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-9.1.0-2026-03-09-6a872a80b/bin/monkeybrains.jar" \
+  -jar "$SDK/bin/monkeybrains.jar" \
   -o bin/Segment34mk3.prg -f monkey.jungle \
-  -y /Users/ludvig.wadenstein/sideprojects/Garmin/developer_key \
+  -y "$DEV_KEY" \
   -d fenix847mm_sim -w
 ```
 Omit `-r` to skip launching the simulator. Change `-d` to target a different device.
 
-**Run unit tests** (requires the Connect IQ simulator; `monkeyc` is not on PATH, so call the SDK directly):
+**Run unit tests** (requires the Connect IQ simulator):
 ```bash
-SDK="/Users/ludvig.wadenstein/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-9.1.0-2026-03-09-6a872a80b"
 java -Xms1g -Dfile.encoding=UTF-8 -Dapple.awt.UIElement=true -jar "$SDK/bin/monkeybrains.jar" \
-  -o bin/test.prg -f monkey.jungle -y /Users/ludvig.wadenstein/sideprojects/Garmin/developer_key \
+  -o bin/test.prg -f monkey.jungle -y "$DEV_KEY" \
   -d fenix7 -t
-open "$SDK/bin/ConnectIQ.app"   # start the simulator if it isn't running
+open "$SDK/bin/ConnectIQ.app"   # start the simulator if it isn't running (macOS)
 "$SDK/bin/monkeydo" bin/test.prg fenix7 -t
 ```
-`monkeydo` may need the sandbox disabled to reach the simulator. Tests live in `source/*Test.mc` (e.g. `OpenWeatherServiceTest.mc`, `CelestialCalcTest.mc`) and are annotated with `(:test)`. Each test is a standalone function returning `Boolean`.
+Tests live in `source/*Test.mc` (e.g. `OpenWeatherServiceTest.mc`, `CelestialCalcTest.mc`) and are annotated with `(:test)`. Each test is a standalone function returning `Boolean`.
 
 Note: Most of the code doesn't have tests; a lot of it is hard to test as mocking every Garmin API is not feasible. Use tests when writing complex logic that can be easily isolated.
 

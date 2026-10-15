@@ -15,12 +15,12 @@ function testJulianDay2000Jan15(logger as Test.Logger) as Boolean {
 
 (:test)
 function testJulianDay2024Jun21(logger as Test.Logger) as Boolean {
-    return julianDay(2024, 6, 21) == 2460482;
+    return julianDay(2024, 6, 21) == 2460483;
 }
 
 (:test)
 function testJulianDay2025Jan1(logger as Test.Logger) as Boolean {
-    return julianDay(2025, 1, 1) == 2460668;
+    return julianDay(2025, 1, 1) == 2460677;
 }
 
 // ── Moon illumination % tests ──────────────────────────────────────────────────
@@ -41,8 +41,10 @@ function testMoonIlluminationFullMoon(logger as Test.Logger) as Boolean {
 
 (:test)
 function testMoonIlluminationQuarter(logger as Test.Logger) as Boolean {
+    // Real first quarter. The mean-moon model drifts up to ~half a day
+    // from the true moon, which is ~5-6% illumination at this phase.
     var illum = moonIlluminationPercent(2024, 6, 14);
-    return illum >= 45 && illum <= 55;
+    return illum >= 40 && illum <= 60;
 }
 
 (:test)

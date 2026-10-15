@@ -326,6 +326,7 @@ class GraphRenderer {
         }
 
         var twoHours = new Time.Duration(7200);
+        var sixHours = new Time.Duration(21600);
         var iterator = null;
         var max = null;
 
@@ -345,7 +346,7 @@ class GraphRenderer {
             max = 100;
         } else if(dataSource == 4) {
             if(!(Toybox.SensorHistory has :getPressureHistory)) { return []; }
-            iterator = Toybox.SensorHistory.getPressureHistory({:period => twoHours, :order => Toybox.SensorHistory.ORDER_OLDEST_FIRST});
+            iterator = Toybox.SensorHistory.getPressureHistory({:period => sixHours, :order => Toybox.SensorHistory.ORDER_OLDEST_FIRST});
         } else if(dataSource == 5 or dataSource == 7) {
             if(!(Toybox.SensorHistory has :getStressHistory)) { return []; }
             iterator = Toybox.SensorHistory.getStressHistory({:period => twoHours, :order => Toybox.SensorHistory.ORDER_OLDEST_FIRST});

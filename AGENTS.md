@@ -9,16 +9,21 @@ A Garmin Connect IQ watchface written in **Monkey C** (`.mc` files), targeting ~
 java -Xms1g -Dfile.encoding=UTF-8 -Dapple.awt.UIElement=true \
   -jar "/Users/ludvig.wadenstein/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-9.1.0-2026-03-09-6a872a80b/bin/monkeybrains.jar" \
   -o bin/Segment34mk3.prg -f monkey.jungle \
-  -y /Users/ludvig.wadenstein/code/Garmin/developer_key \
+  -y /Users/ludvig.wadenstein/sideprojects/Garmin/developer_key \
   -d fenix847mm_sim -w
 ```
 Omit `-r` to skip launching the simulator. Change `-d` to target a different device.
 
-**Run unit tests:**
+**Run unit tests** (requires the Connect IQ simulator; `monkeyc` is not on PATH, so call the SDK directly):
 ```bash
-monkeyc --unit-test -d fenix7
+SDK="/Users/ludvig.wadenstein/Library/Application Support/Garmin/ConnectIQ/Sdks/connectiq-sdk-mac-9.1.0-2026-03-09-6a872a80b"
+java -Xms1g -Dfile.encoding=UTF-8 -Dapple.awt.UIElement=true -jar "$SDK/bin/monkeybrains.jar" \
+  -o bin/test.prg -f monkey.jungle -y /Users/ludvig.wadenstein/sideprojects/Garmin/developer_key \
+  -d fenix7 -t
+open "$SDK/bin/ConnectIQ.app"   # start the simulator if it isn't running
+"$SDK/bin/monkeydo" bin/test.prg fenix7 -t
 ```
-Tests live in `source/OpenWeatherServiceTest.mc` and are annotated with `(:test)`. Each test is a standalone function returning `Boolean`.
+`monkeydo` may need the sandbox disabled to reach the simulator. Tests live in `source/*Test.mc` (e.g. `OpenWeatherServiceTest.mc`, `CelestialCalcTest.mc`) and are annotated with `(:test)`. Each test is a standalone function returning `Boolean`.
 
 Note: Most of the code doesn't have tests; a lot of it is hard to test as mocking every Garmin API is not feasible. Use tests when writing complex logic that can be easily isolated.
 
@@ -35,6 +40,7 @@ Segment34WatchFaceDelegate.mc – Handles touch/press input; routes actions to t
 Segment34ServiceDelegate.mc – Background service; fires OWM fetch on temporal event
 OpenWeatherService.mc       – HTTP requests to OpenWeatherMap API; runs in background context
 OpenWeatherServiceTest.mc   – Unit tests for OWM code→Garmin condition mapping
+CelestialCalcTest.mc        – Unit tests for Julian day and moon phase/illumination
 DataHelper.mc               – Activity data and complications: steps, calories, heart rate, battery, etc.
 ValueResolver.mc            – Resolves configurable field type codes to display strings and labels
 WeatherDisplayHelper.mc     – Formats weather data for display (conditions, temperature, wind)

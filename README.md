@@ -82,9 +82,11 @@ For refactorings and optimizations keep in mind that:
 - Weather data in the grafs like precipitation over 12h and longer pressure trends
 - When is next rain/non-rain
     - 100% in 50 minutes - 60% in 2 days - Dry in 30 minutes - Dry 3 days - Dry 5 days
-- No spacing between notifications and seconds fields if high values
 
 ## Change log
+3.1
+- Support for Enduro 4, Marq gen3 and Approach S72
+
 3.0
 - Fenix 9 series support
 - Sleep score as option

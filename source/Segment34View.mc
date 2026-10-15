@@ -56,6 +56,13 @@ class Segment34View extends WatchUi.WatchFace {
     hidden var textSideAdj as Number = 0;
     hidden var secondsClipWidth as Number = 24;
     hidden var iconYAdj as Number = 3;
+    hidden var bottomFiveXAdj as Number = 0; // Shifts the 5-digit bottom field left to make room for the battery
+    hidden var bottomFiveStepAdj as Number = 0; // Extra icon spacing reserved for that battery
+    hidden var batteryXAdj as Number = 0; // Battery icon offset from centerX when sharing the bottom row
+    hidden var bottomIconYAdj as Number = 0; // Offset for the icons flanking the 5-digit bottom field
+    hidden var batteryStepWidth as Number = 0; // Small font: icon spacing around the battery when the bottom field is hidden (0 = icons stay above it)
+    hidden var batteryHiddenYAdj as Number = 0; // Battery (and the icons beside it) offset when the bottom field is hidden
+    hidden var batteryYAdj as Number = 0; // Battery icon offset from bottomFiveY when sharing the bottom row
     hidden var graphBarWidth as Number = 2;
     hidden var graphBarSpacing as Number = 2;
     hidden var graphHeight as Number = 20;
@@ -78,7 +85,7 @@ class Segment34View extends WatchUi.WatchFace {
     hidden var fontAODData as WatchUi.FontResource?;
     hidden var fontBottomData as WatchUi.FontResource?;
     hidden var fontBattery as WatchUi.FontResource?;
-    hidden var fontBottomCompactData as WatchUi.FontResource?; // For Round240Large compact bottom layout
+    hidden var fontBottomCompactData as WatchUi.FontResource?; // Smaller 5-digit bottom font (Round240 large mode)
 
 
     // Layout Caching
@@ -411,12 +418,14 @@ class Segment34View extends WatchUi.WatchFace {
                 Rez.Fonts.led_small_lines,
                 propSmallFontVariant
             );
+            // Fixed-width variants: bottom fields are drawn on a fixed grid, so '.' and ':' need a full cell.
             fontBottomData = loadFontVariant(
-                Rez.Fonts.led_small,
-                Rez.Fonts.led_small_readable,
-                Rez.Fonts.led_small_lines,
+                Rez.Fonts.led_small_fixed,
+                Rez.Fonts.led_small_readable_fixed,
+                Rez.Fonts.led_small_lines_fixed,
                 propBottomFontVariant
             );
+            fontBottomCompactData = null;
             fontLabel = Application.loadResource(Rez.Fonts.xsmol);
             fontBattery = fontTinyData;
 
@@ -425,11 +434,16 @@ class Segment34View extends WatchUi.WatchFace {
             tinyDataHeight = 8;
             smallDataHeight = 13;
             secondsClipWidth = 24;
-            bottomFiveAdj = 2;
+            bottomFiveAdj = 0;
             baseY = centerY - smallDataHeight + 4;
             aboveLine2Adjustment = 5;
             bottomFieldWidths = [3, 3, 3, 0];
-            bottomDataWidth = 12;
+            largeDataWidth = 12;
+            bottomFiveXAdj = -19;
+            batteryXAdj = 32;
+            bottomIconYAdj = -5;
+            batteryStepWidth = 28;
+            batteryHiddenYAdj = -10;
         } else {
             // Round240 large mode keeps ancillary rows compact while
             // retaining the larger font for the main bottom data fields.
@@ -447,9 +461,9 @@ class Segment34View extends WatchUi.WatchFace {
                 propBottomFontVariant
             );
             fontBottomCompactData = loadFontVariant(
-                Rez.Fonts.led_small,
-                Rez.Fonts.led_small_readable,
-                Rez.Fonts.led_small_lines,
+                Rez.Fonts.led_small_fixed,
+                Rez.Fonts.led_small_readable_fixed,
+                Rez.Fonts.led_small_lines_fixed,
                 propBottomFontVariant
             );
             fontLabel = fontTinyData;
@@ -461,20 +475,25 @@ class Segment34View extends WatchUi.WatchFace {
             tinyDataHeight = 8;
             smallDataHeight = 13;
             secondsClipWidth = 24;
-            bottomFiveAdj = 2;
+            bottomFiveAdj = 5;
             baseY = centerY - 6;
             aboveLine2Adjustment = 3;
             bottomFieldWidths = [4, 4, 0, 0];
-            bottomDataWidth = 18;
+            largeDataWidth = 18;
+            bottomFiveXAdj = -25;
+            batteryXAdj = 29;
+            bottomIconYAdj = -5;
         }
 
         fontIcons = Application.loadResource(Rez.Fonts.icons);
 
         clockHeight = 80;
         clockWidth = 220;
-        labelMargin = (propFontSize == 0) ? 6 : 5;
+        labelMargin = 6;
         largeDataHeight = 20;
-        largeDataWidth = 18;
+        bottomDataWidth = 12;
+        bottomFiveStepAdj = 30;
+        batteryYAdj = -3;
 
         baseX = centerX;
         fieldSpaceingAdj = 10;
@@ -1506,7 +1525,7 @@ class Segment34View extends WatchUi.WatchFace {
     }
 
     hidden function getBottomIconY(stepWidth as Number) as Number {
-        if(propFontSize == 1 and stepWidth == 0) {
+        if((propFontSize == 1 or batteryStepWidth != 0) and stepWidth == 0) {
             if(isBatteryIconVisible()) {
                 // Battery icon uses a top-aligned drawText call, while the side icons use VCENTER.
                 // Convert the battery icon's top position into the icon centerline so the icons sit alongside it.
@@ -1516,7 +1535,7 @@ class Segment34View extends WatchUi.WatchFace {
             return screenHeight - 31;
         }
 
-        return bottomFiveY + (largeDataHeight / 2) + iconYAdj;
+        return bottomFiveY + (largeDataHeight / 2) + iconYAdj + bottomIconYAdj;
     }
 
     (:Square)
@@ -1587,70 +1606,31 @@ class Segment34View extends WatchUi.WatchFace {
 
     (:Round)
     hidden function drawBottomFieldsWithIcons(dc as Dc, values as Dictionary) as Void {
-        var round240CompactBottom =
-            (screenWidth == 240 && screenHeight == 240);
-
-        var round240LargeBottom =
-            (screenWidth == 240 && screenHeight == 240 && propFontSize == 1);
-
-        var bottomFiveFont =
-            (round240LargeBottom && fontBottomCompactData != null)
-            ? fontBottomCompactData
-            : fontBottomData;
-        var bottomFiveWidth = round240LargeBottom ? 12 : bottomDataWidth;
-
-        var fieldX = centerX;
-        if(round240CompactBottom) {
-            fieldX = round240LargeBottom ? centerX - 25 : centerX - 19;
-        }
-        var fieldY = round240CompactBottom ? bottomFiveY + 3 : bottomFiveY;
+        // The field is only offset to make room for the battery icon when it is shown
+        var batteryShown = isBatteryIconVisible();
+        var fieldX = centerX + (batteryShown ? bottomFiveXAdj : 0);
+        var font = (fontBottomCompactData != null) ? fontBottomCompactData : fontBottomData;
 
         var step_width;
         if(GraphRenderer.isGraphCode(propBottomFieldShows)) {
-            bottomGraphRenderer.drawGraph(
-                dc,
-                values[:dataBottomGraph],
-                values[:dataBottomGraph2b],
-                fieldX,
-                fieldY,
-                largeDataHeight,
-                theme.colors
-            );
-            step_width = bottomFiveWidth * 5;
+            bottomGraphRenderer.drawGraph(dc, values[:dataBottomGraph], values[:dataBottomGraph2b], fieldX, bottomFiveY, largeDataHeight, theme.colors);
+            step_width = bottomDataWidth * 5;
         } else {
-            step_width = drawDataField(
-                dc,
-                fieldX,
-                fieldY,
-                3,
-                null,
-                values[:dataBottom],
-                5,
-                bottomFiveFont,
-                bottomFiveWidth * 5
-            );
+            step_width = drawDataField(dc, fieldX, bottomFiveY, 3, null, values[:dataBottom], 5, font, bottomDataWidth * 5);
         }
-
-        if(round240CompactBottom) {
-            // MkII reserves extra horizontal room for the battery on 240x240.
-            step_width += 30;
-        }
-
+        if(step_width != 0 and batteryShown) { step_width += bottomFiveStepAdj; }
         var iconY = getBottomIconY(step_width);
 
-        // Draw icons
-        if(propFontSize == 1 and step_width == 0) {
-            if(screenWidth <= 280) {
-                step_width = 45;
+        // Draw icons; with the bottom field hidden they sit on either side of the battery icon
+        if(step_width == 0 and (propFontSize == 1 or batteryStepWidth != 0)) {
+            if(propFontSize == 0) {
+                step_width = batteryStepWidth;
             } else {
-                step_width = 65;
+                step_width = (screenWidth <= 280) ? 45 : 65;
             }
-            drawIconWithOverlay(dc, centerX - (step_width / 2) - (marginX / 2), iconY, Graphics.TEXT_JUSTIFY_RIGHT, values[:dataIcon1], values[:dataIcon1Count] as String, values[:dataIcon1Color] as Number?);
-            drawIconWithOverlay(dc, centerX + (step_width / 2) + (marginX / 2) - 2, iconY, Graphics.TEXT_JUSTIFY_LEFT, values[:dataIcon2], values[:dataIcon2Count] as String, values[:dataIcon2Color] as Number?);
-        } else {
-            drawIconWithOverlay(dc, centerX - (step_width / 2) - (marginX / 2), iconY, Graphics.TEXT_JUSTIFY_RIGHT, values[:dataIcon1], values[:dataIcon1Count] as String, values[:dataIcon1Color] as Number?);
-            drawIconWithOverlay(dc, centerX + (step_width / 2) + (marginX / 2) - 2, iconY, Graphics.TEXT_JUSTIFY_LEFT, values[:dataIcon2], values[:dataIcon2Count] as String, values[:dataIcon2Color] as Number?);
         }
+        drawIconWithOverlay(dc, centerX - (step_width / 2) - (marginX / 2), iconY, Graphics.TEXT_JUSTIFY_RIGHT, values[:dataIcon1], values[:dataIcon1Count] as String, values[:dataIcon1Color] as Number?);
+        drawIconWithOverlay(dc, centerX + (step_width / 2) + (marginX / 2) - 2, iconY, Graphics.TEXT_JUSTIFY_LEFT, values[:dataIcon2], values[:dataIcon2Count] as String, values[:dataIcon2Color] as Number?);
     }
 
     hidden function drawIconWithOverlay(dc as Dc, x as Number, y as Number, justify as Number, iconStr as String, countStr as String, iconColor as Number?) as Void {
@@ -1738,7 +1718,7 @@ class Segment34View extends WatchUi.WatchFace {
 
     (:MIP)
     hidden function getBatteryIconY() as Number {
-        if(propFontSize == 0) { return screenHeight - 20; }
+        if(propFontSize == 0) { return screenHeight - 20 + batteryHiddenYAdj; }
         return screenHeight - 28;
     }
 
@@ -1746,19 +1726,9 @@ class Segment34View extends WatchUi.WatchFace {
     hidden function drawBatteryIcon(dc as Dc, values as Dictionary) {
         if(!isBatteryIconVisible()) { return; }
 
-        var round240CompactBottom =
-            (screenWidth == 240 &&
-            screenHeight == 240 &&
-            propBottomFieldShows != -2);
-
-        var round240LargeBottom =
-            (round240CompactBottom && propFontSize == 1);
-
-        var x = round240CompactBottom
-            ? (round240LargeBottom ? centerX + 29 : centerX + 32)
-            : centerX;
-
-        var y = round240CompactBottom ? bottomFiveY : getBatteryIconY();
+        var shared = (batteryXAdj != 0 and propBottomFieldShows != -2);
+        var x = shared ? centerX + batteryXAdj : centerX;
+        var y = shared ? bottomFiveY + batteryYAdj : getBatteryIconY();
 
         dc.setColor(0x555555, Graphics.COLOR_TRANSPARENT);
 

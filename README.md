@@ -79,13 +79,15 @@ For refactorings and optimizations keep in mind that:
 | `resources-{deu,fre,ita,pol,spa,swe}/` | Translated strings for 6 languages; must stay in sync with English |
 
 ## Things people have asked for (may or may not be implemented)
-- Weather data in the grafs like precipitation over 12h and longer pressure trends
+- Weather data in the grafs like precipitation over 12h
 - When is next rain/non-rain
     - 100% in 50 minutes - 60% in 2 days - Dry in 30 minutes - Dry 3 days - Dry 5 days
 
 ## Change log
 3.1
 - Support for Enduro 4, Marq gen3 and Approach S72
+- Support for 240x240 devices Fenix 7s and Fenix 7s pro thanks to 
+- Pressure trend over 6h instead of 2h
 
 3.0
 - Fenix 9 series support

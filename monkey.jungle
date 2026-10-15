@@ -8,94 +8,101 @@ project.optimization = 3p
 # =============================================================================
 
 # -----------------------------------------------------------------------------
+# 240x240 MIP DEVICES
+# -----------------------------------------------------------------------------
+
+fenix7s.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;Round454;AMOLED;Square
+fenix7spro.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;Round454;AMOLED;Square
+
+# -----------------------------------------------------------------------------
 # 260x260 MIP DEVICES
 # -----------------------------------------------------------------------------
 
-fr255.excludeAnnotations = Round280;Round360;Round390;Round416;Round454;AMOLED;Square
-fr255m.excludeAnnotations = Round280;Round360;Round390;Round416;Round454;AMOLED;Square
-fr955.excludeAnnotations = Round280;Round360;Round390;Round416;Round454;AMOLED;Square
-fenix7.excludeAnnotations = Round280;Round360;Round390;Round416;Round454;AMOLED;Square
-fenix7pro.excludeAnnotations = Round280;Round360;Round390;Round416;Round454;AMOLED;Square
-fenix7pronowifi.excludeAnnotations = Round280;Round360;Round390;Round416;Round454;AMOLED;Square
-fenix8solar47mm.excludeAnnotations = Round280;Round360;Round390;Round416;Round454;AMOLED;Square
-fenix9prosolar47mm.excludeAnnotations = Round280;Round360;Round390;Round416;Round454;AMOLED;Square
+fr255.excludeAnnotations = Round240;Round280;Round360;Round390;Round416;Round454;AMOLED;Square
+fr255m.excludeAnnotations = Round240;Round280;Round360;Round390;Round416;Round454;AMOLED;Square
+fr955.excludeAnnotations = Round240;Round280;Round360;Round390;Round416;Round454;AMOLED;Square
+fenix7.excludeAnnotations = Round240;Round280;Round360;Round390;Round416;Round454;AMOLED;Square
+fenix7pro.excludeAnnotations = Round240;Round280;Round360;Round390;Round416;Round454;AMOLED;Square
+fenix7pronowifi.excludeAnnotations = Round240;Round280;Round360;Round390;Round416;Round454;AMOLED;Square
+fenix8solar47mm.excludeAnnotations = Round240;Round280;Round360;Round390;Round416;Round454;AMOLED;Square
+fenix9prosolar47mm.excludeAnnotations = Round240;Round280;Round360;Round390;Round416;Round454;AMOLED;Square
 
 # -----------------------------------------------------------------------------
 # 280x280 MIP DEVICES
 # -----------------------------------------------------------------------------
 
-fenix7x.excludeAnnotations = Round260;Round360;Round390;Round416;Round454;AMOLED;Square
-fenix7xpro.excludeAnnotations = Round260;Round360;Round390;Round416;Round454;AMOLED;Square
-fenix7xpronowifi.excludeAnnotations = Round260;Round360;Round390;Round416;Round454;AMOLED;Square
-fenix8solar51mm.excludeAnnotations = Round260;Round360;Round390;Round416;Round454;AMOLED;Square
-enduro3.excludeAnnotations = Round260;Round360;Round390;Round416;Round454;AMOLED;Square
-fenix9prosolar51mm.excludeAnnotations = Round260;Round360;Round390;Round416;Round454;AMOLED;Square
-enduro4.excludeAnnotations = Round260;Round360;Round390;Round416;Round454;AMOLED;Square
+fenix7x.excludeAnnotations = Round240;Round260;Round360;Round390;Round416;Round454;AMOLED;Square
+fenix7xpro.excludeAnnotations = Round240;Round260;Round360;Round390;Round416;Round454;AMOLED;Square
+fenix7xpronowifi.excludeAnnotations = Round240;Round260;Round360;Round390;Round416;Round454;AMOLED;Square
+fenix8solar51mm.excludeAnnotations = Round240;Round260;Round360;Round390;Round416;Round454;AMOLED;Square
+enduro3.excludeAnnotations = Round240;Round260;Round360;Round390;Round416;Round454;AMOLED;Square
+fenix9prosolar51mm.excludeAnnotations = Round240;Round260;Round360;Round390;Round416;Round454;AMOLED;Square
+enduro4.excludeAnnotations = Round240;Round260;Round360;Round390;Round416;Round454;AMOLED;Square
 
 # -----------------------------------------------------------------------------
 # 390x390 AMOLED DEVICES
 # -----------------------------------------------------------------------------
 
-vivoactive5.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-fr165.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-fr165m.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-approachs50.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-descentg2.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-marq2.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-marq2aviator.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-epix2pro42mm.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-venu3s.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-approachs7042mm.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-descentmk343mm.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-fr57042mm.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-instinct3amoled45mm.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-venu441mm.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-vivoactive6.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-fr170.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-fr170m.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
-fr70.excludeAnnotations = Round260;Round280;Round360;Round416;Round454;MIP;Square
+vivoactive5.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+fr165.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+fr165m.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+approachs50.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+descentg2.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+marq2.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+marq2aviator.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+epix2pro42mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+venu3s.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+approachs7042mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+descentmk343mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+fr57042mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+instinct3amoled45mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+venu441mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+vivoactive6.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+fr170.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+fr170m.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
+fr70.excludeAnnotations = Round240;Round260;Round280;Round360;Round416;Round454;MIP;Square
 
 # -----------------------------------------------------------------------------
 # 416x416 AMOLED DEVICES
 # -----------------------------------------------------------------------------
 
-epix2.excludeAnnotations = Round260;Round280;Round360;Round390;Round454;MIP;Square
-epix2pro47mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round454;MIP;Square
-venu2.excludeAnnotations = Round260;Round280;Round360;Round390;Round454;MIP;Square
-venu2plus.excludeAnnotations = Round260;Round280;Round360;Round390;Round454;MIP;Square
-d2airx10.excludeAnnotations = Round260;Round280;Round360;Round390;Round454;MIP;Square
-d2mach1.excludeAnnotations = Round260;Round280;Round360;Round390;Round454;MIP;Square
-fr265.excludeAnnotations = Round260;Round280;Round360;Round390;Round454;MIP;Square
-fenix843mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round454;MIP;Square
-fenixe.excludeAnnotations = Round260;Round280;Round360;Round390;Round454;MIP;Square
-instinct3amoled50mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round454;MIP;Square
-fenix943mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round454;MIP;Square
-fenix9pro43mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round454;MIP;Square
-approachs7243mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round454;MIP;Square
+epix2.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round454;MIP;Square
+epix2pro47mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round454;MIP;Square
+venu2.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round454;MIP;Square
+venu2plus.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round454;MIP;Square
+d2airx10.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round454;MIP;Square
+d2mach1.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round454;MIP;Square
+fr265.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round454;MIP;Square
+fenix843mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round454;MIP;Square
+fenixe.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round454;MIP;Square
+instinct3amoled50mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round454;MIP;Square
+fenix943mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round454;MIP;Square
+fenix9pro43mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round454;MIP;Square
+approachs7243mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round454;MIP;Square
 
 # -----------------------------------------------------------------------------
 # 454x454 AMOLED DEVICES
 # -----------------------------------------------------------------------------
 
-venu3.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-epix2pro51mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-fenix847mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-fenix8pro47mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-fr965.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-fr970.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-fr57047mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-descentmk351mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-d2mach2.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-approachs7047mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-venu445mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-fenix947mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-fenix9pro47mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-fenix9pro51mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-approachs7247mm.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
-marq3.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;MIP;Square
+venu3.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+epix2pro51mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+fenix847mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+fenix8pro47mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+fr965.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+fr970.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+fr57047mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+descentmk351mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+d2mach2.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+approachs7047mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+venu445mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+fenix947mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+fenix9pro47mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+fenix9pro51mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+approachs7247mm.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
+marq3.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;MIP;Square
 
 # -----------------------------------------------------------------------------
 # 448x486 RECTANGLE AMOLED DEVICES
 # -----------------------------------------------------------------------------
 
-venux1.excludeAnnotations = Round260;Round280;Round360;Round390;Round416;Round454;MIP;Round
+venux1.excludeAnnotations = Round240;Round260;Round280;Round360;Round390;Round416;Round454;MIP;Round

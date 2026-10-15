@@ -17,6 +17,12 @@ class GraphRenderer {
         return code >= 100 and code <= 112;
     }
 
+    // Length in seconds of the sensor-history window a graph covers.
+    // Pressure history (data source 4) covers 6 hours since it changes slowly; everything else is 2 hours.
+    static function historyWindowSecs(dataSource as Number) as Number {
+        return dataSource == 4 ? 21600 : 7200;
+    }
+
     static function graphCodeToDataSource(code as Number) as Number {
         return code - 100;
     }
@@ -267,7 +273,7 @@ class GraphRenderer {
     }
 
     // Returns the X-axis label for the leftmost (isLeft=true) or rightmost point.
-    // For 2-hour data: formatted time; for 7-day data: abbreviated weekday.
+    // For hour-window data (2h, or 6h for pressure): formatted time; for 7-day data: abbreviated weekday.
     // Labels are cached per epoch-minute so Gregorian.info is only called once/minute.
     function getGraphXLabel(isLeft as Boolean) as String {
         refreshXLabels();
@@ -293,10 +299,10 @@ class GraphRenderer {
             _cachedXLabelLeft = dayName(info6.day_of_week);
             _cachedXLabelRight = dayName(infoNow.day_of_week);
         } else {
-            var target2h = nowMoment.subtract(new Time.Duration(7200));
+            var targetStart = nowMoment.subtract(new Time.Duration(historyWindowSecs(_propGraphData)));
             var infoNow = Time.Gregorian.info(nowMoment, Time.FORMAT_SHORT);
-            var info2h = Time.Gregorian.info(target2h, Time.FORMAT_SHORT);
-            _cachedXLabelLeft = formatXLabel(info2h.hour, info2h.min);
+            var infoStart = Time.Gregorian.info(targetStart, Time.FORMAT_SHORT);
+            _cachedXLabelLeft = formatXLabel(infoStart.hour, infoStart.min);
             _cachedXLabelRight = formatXLabel(infoNow.hour, infoNow.min);
         }
     }
@@ -326,7 +332,7 @@ class GraphRenderer {
         }
 
         var twoHours = new Time.Duration(7200);
-        var sixHours = new Time.Duration(21600);
+        var pressureWindow = new Time.Duration(historyWindowSecs(4));
         var iterator = null;
         var max = null;
 
@@ -346,7 +352,7 @@ class GraphRenderer {
             max = 100;
         } else if(dataSource == 4) {
             if(!(Toybox.SensorHistory has :getPressureHistory)) { return []; }
-            iterator = Toybox.SensorHistory.getPressureHistory({:period => sixHours, :order => Toybox.SensorHistory.ORDER_OLDEST_FIRST});
+            iterator = Toybox.SensorHistory.getPressureHistory({:period => pressureWindow, :order => Toybox.SensorHistory.ORDER_OLDEST_FIRST});
         } else if(dataSource == 5 or dataSource == 7) {
             if(!(Toybox.SensorHistory has :getStressHistory)) { return []; }
             iterator = Toybox.SensorHistory.getStressHistory({:period => twoHours, :order => Toybox.SensorHistory.ORDER_OLDEST_FIRST});
@@ -386,20 +392,22 @@ class GraphRenderer {
             cachedGraphYMin = min.toFloat(); cachedGraphYMax = max.toFloat();
         }
 
-        // Allocate one slot per display column, each covering an equal slice of the 2h window.
+        // Allocate one slot per display column, each covering an equal slice of the history window (2h, or 6h for pressure).
         // Anchor the right edge to the actual newest sample time rather than Time.now(), so the
         // slot mapping stays aligned even when the device clock drifts from sample timestamps.
-        // secsPerSlot is exact because all graphTargetWidth values (25, 40, 45) divide 7200 evenly.
+        // secsPerSlot is integer division; for widths that don't divide the window evenly (e.g. 38) the
+        // remainder is absorbed by clamping the newest samples into the last slot.
+        var windowSecs = historyWindowSecs(dataSource);
         var newestMoment = iterator.getNewestSampleTime();
         var oldestMoment = iterator.getOldestSampleTime();
         var nowEpoch = Time.now().value();
         var newestEpoch = newestMoment != null ? newestMoment.value() : nowEpoch;
-        var oldestEpoch = oldestMoment != null ? oldestMoment.value() : (nowEpoch - 7200);
+        var oldestEpoch = oldestMoment != null ? oldestMoment.value() : (nowEpoch - windowSecs);
         // Some simulators return getNewestSampleTime/getOldestSampleTime with swapped semantics,
         // so take whichever is actually later as the right edge of the window.
         var windowEndEpoch = newestEpoch > oldestEpoch ? newestEpoch : oldestEpoch;
-        var windowStartEpoch = windowEndEpoch - 7200;
-        var secsPerSlot = 7200 / _targetWidth;
+        var windowStartEpoch = windowEndEpoch - windowSecs;
+        var secsPerSlot = windowSecs / _targetWidth;
         var isStress = (dataSource == 5 or dataSource == 7);
         var diff = max - (min * 0.9);
 

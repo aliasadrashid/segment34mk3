@@ -26,3 +26,15 @@ function testGraphCodeToDataSource(logger as Test.Logger) as Boolean {
         && GraphRenderer.graphCodeToDataSource(105) == 5
         && GraphRenderer.graphCodeToDataSource(108) == 8;
 }
+
+(:test)
+function testHistoryWindowPressureIsSixHours(logger as Test.Logger) as Boolean {
+    return GraphRenderer.historyWindowSecs(4) == 21600;
+}
+
+(:test)
+function testHistoryWindowOthersAreTwoHours(logger as Test.Logger) as Boolean {
+    return GraphRenderer.historyWindowSecs(0) == 7200
+        && GraphRenderer.historyWindowSecs(2) == 7200
+        && GraphRenderer.historyWindowSecs(5) == 7200;
+}

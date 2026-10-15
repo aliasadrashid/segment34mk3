@@ -343,7 +343,7 @@
     <string id="settings_elevation_history" scope="settings">Elevation history</string>
     <string id="settings_heart_rate_history" scope="settings">Heart rate history</string>
     <string id="settings_oxygen_saturation_history" scope="settings">Oxygen saturation history</string>
-    <string id="settings_pressure_history" scope="settings">Pressure history</string>
+    <string id="settings_pressure_history" scope="settings">Pressure history (6h)</string>
     <string id="settings_stress_history" scope="settings">Stress history</string>
     <string id="settings_stress_rest_orange_blue" scope="settings">Stress/rest (orange/blue)</string>
     <string id="settings_temperature_sensor_history" scope="settings">Temperature sensor history</string>
@@ -356,7 +356,7 @@
     <string id="settings_graph_prefix_elevation_history" scope="settings">Graph: Elevation history</string>
     <string id="settings_graph_prefix_heart_rate_history" scope="settings">Graph: Heart rate history</string>
     <string id="settings_graph_prefix_oxygen_saturation_history" scope="settings">Graph: Oxygen saturation history</string>
-    <string id="settings_graph_prefix_pressure_history" scope="settings">Graph: Pressure history</string>
+    <string id="settings_graph_prefix_pressure_history" scope="settings">Graph: Pressure history (6h)</string>
     <string id="settings_graph_prefix_stress_history" scope="settings">Graph: Stress history</string>
     <string id="settings_graph_prefix_stress_rest_orange_blue" scope="settings">Graph: Stress/rest (orange/blue)</string>
     <string id="settings_graph_prefix_temperature_sensor_history" scope="settings">Graph: Temperature sensor history</string>

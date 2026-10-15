@@ -1,7 +1,7 @@
 info face="LED" size=13 bold=0 italic=0 smooth=1 spacing=1,1
-common lineHeight=13 base=13 scaleW=572 scaleH=13 pages=1
+common lineHeight=13 base=13 scaleW=804 scaleH=13 pages=1
 page id=0 file="led_small2.png"
-chars count=11
+chars count=12
 char id=48 x=0 y=0 width=9 height=13 xoffset=0 yoffset=0 xadvance=12 page=0
 char id=49 x=11 y=0 width=7 height=13 xoffset=2 yoffset=0 xadvance=12 page=0
 char id=50 x=20 y=0 width=9 height=13 xoffset=0 yoffset=0 xadvance=12 page=0
@@ -84,3 +84,4 @@ char id=192 x=755 y=0 width=9 height=13 xoffset=0 yoffset=0 xadvance=12 page=0
 char id=262 x=765 y=0 width=9 height=13 xoffset=0 yoffset=0 xadvance=12 page=0
 char id=323 x=775 y=0 width=9 height=13 xoffset=0 yoffset=0 xadvance=12 page=0
 char id=377 x=785 y=0 width=9 height=13 xoffset=0 yoffset=0 xadvance=12 page=0
+char id=43 x=795 y=0 width=9 height=13 xoffset=0 yoffset=0 xadvance=12 page=0
